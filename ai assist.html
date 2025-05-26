@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دستیار هوش مصنوعی پیشرفته</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Tahoma', 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .placeholder-right::placeholder {
+            text-align: right;
+            color: #a1a1aa; /* zinc-400 / gray-400 - روشن */
+        }
+        html.dark .placeholder-right::placeholder {
+            color: #71717a; /* zinc-500 / gray-500 - تاریک */
+        }
+
+        /* متغیرهای CSS برای اسکرول‌بار و Selection با کنتراست بالا */
+        :root {
+            --scrollbar-track-bg: #f8fafc;    /* slate-50 / gray-50 */
+            --scrollbar-thumb-bg: #cbd5e1;    /* slate-300 / gray-300 */
+            --scrollbar-thumb-hover-bg: #94a3b8;/* slate-400 / gray-400 */
+            --selection-bg: #06b6d4;       /* cyan-500 */
+            --selection-text: white;
+
+            /* رنگ‌های اصلی برای حالت روشن */
+            --app-bg: #eef2f7; /* یک خاکستری بسیار روشن نزدیک به سفید */
+            --content-bg: white;
+            --text-primary: #1e293b; /* slate-800 */
+            --text-secondary: #475569; /* slate-600 */
+            --border-color: #e2e8f0; /* slate-200 */
+            --header-bg: #f8fafc; /* slate-50 */
+            --header-text: #1e293b; /* slate-800 */
+            --input-bg: white;
+            --input-text: #111827; /* gray-900 */
+            --input-border: #d1d5db; /* gray-300 */
+            --button-accent-text-light: white; /* متن دکمه ارسال در حالت روشن */
+        }
+
+        html.dark {
+            --scrollbar-track-bg: #1c1f2c;    /* slate-950 */
+            --scrollbar-thumb-bg: #334155;    /* slate-700 */
+            --scrollbar-thumb-hover-bg: #475569;/* slate-600 */
+            --selection-bg: #22d3ee;       /* cyan-400 */
+            --selection-text: #020617;     /* slate-950 (بسیار تیره) */
+
+            /* رنگ‌های اصلی برای حالت تاریک */
+            --app-bg: #0c0b0b; /* slate-950 (بسیار تیره نزدیک به مشکی) */
+            --content-bg: #0f172a; /* slate-900 */
+            --text-primary: #e2e8f0; /* slate-200 */
+            --text-secondary: #94a3b8; /* slate-400 */
+            --border-color: #334155; /* slate-700 */
+            --header-bg: #020617; /* slate-950 */
+            --header-text: #e2e8f0; /* slate-200 */
+            --input-bg: #1e293b; /* slate-800 */
+            --input-text: #f1f5f9; /* slate-100 */
+            --input-border: #475569; /* slate-600 */
+            --button-accent-text-dark: #f1f5f9; /* متن دکمه ارسال در حالت تیره */
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--scrollbar-track-bg); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-bg); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover-bg); }
+
+        ::selection { background-color: var(--selection-bg); color: var(--selection-text); }
+        ::-moz-selection { background-color: var(--selection-bg); color: var(--selection-text); }
+    </style>
+</head>
+<body style="background-color: var(--app-bg);" class="flex flex-col items-center justify-center min-h-screen p-4 transition-colors duration-300">
+
+    <div style="background-color: var(--content-bg); box-shadow: 0 25px 50px -12px rgba(0,0,0, 0.15), 0 0 15px rgba(0,0,0,0.07);"
+         class="dark:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5),_0_0_15px_rgba(0,0,0,0.3)] rounded-xl w-full max-w-2xl flex flex-col transition-colors duration-300"
+         style="height: 90vh; max-height: 750px;">
+
+        <header style="background-color: var(--header-bg); color: var(--header-text); border-bottom: 1px solid var(--border-color);"
+                class="p-4 sm:p-5 rounded-t-xl flex justify-between items-center transition-colors duration-300">
+            <h1 class="text-lg sm:text-xl font-semibold text-center flex-grow">پرسش و پاسخ با هوش مصنوعی</h1>
+            <button id="theme-toggle" type="button" title="تغییر تم"
+                    style="color: var(--text-secondary);"
+                    class="hover:bg-slate-200 dark:hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-600 rounded-lg text-sm p-2.5 transition-colors duration-300">
+                <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+            </button>
+        </header>
+
+        <div style="border-bottom: 1px solid var(--border-color);" class="p-4 transition-colors duration-300">
+            <label for="modelSelect" style="color: var(--text-secondary);" class="block text-sm font-medium mb-1.5 transition-colors duration-300">انتخاب مدل AI:</label>
+            <select id="modelSelect"
+                    style="background-color: var(--input-bg); color: var(--input-text); border-color: var(--input-border);"
+                    class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-cyan-500 dark:focus:ring-cyan-400 focus:border-cyan-500 dark:focus:border-cyan-400 text-sm transition-colors duration-300">
+                <option value="gemini-1.5-flash-latest">Gemini 1.5 Flash (آخرین نسخه پایدار)</option>
+                <option value="gemini-2.5-flash-preview-05-20">gemini-2.5-flash-preview-05-20</option>
+                <option value="gemini-2.0-flash-001">gemini-2.0-flash-001</option>
+            </select>
+        </div>
+
+        <main style="background-color: var(--content-bg);" class="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4 transition-colors duration-300">
+            <div id="responseContainer">
+                <div id="responseArea"
+                     style="background-color: var(--content-bg); color: var(--text-primary); box-shadow: 0 1px 3px 0 rgba(0,0,0,0.07), 0 1px 2px 0 rgba(0,0,0,0.05);"
+                     class="dark:shadow-md dark:shadow-slate-950/50 text-sm sm:text-base leading-relaxed p-4 rounded-lg min-h-[100px] whitespace-pre-wrap text-right transition-colors duration-300">
+                    پاسخ هوش مصنوعی در اینجا نمایش داده خواهد شد...
+                </div>
+            </div>
+            <div id="loadingIndicator" style="color: var(--text-secondary); display: none;" class="flex items-center justify-center mt-4">
+                <svg class="animate-spin ml-2 h-5 w-5 text-cyan-500 dark:text-cyan-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>در حال پردازش، لطفاً کمی صبر کنید...</span>
+            </div>
+        </main>
+
+        <footer style="background-color: var(--header-bg); border-top: 1px solid var(--border-color);"
+                class="p-4 rounded-b-xl transition-colors duration-300">
+            <div class="flex items-end space-x-3 rtl:space-x-reverse">
+                <textarea id="promptInput"
+                          style="background-color: var(--input-bg); color: var(--input-text); border-color: var(--input-border);"
+                          class="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-cyan-500 dark:focus:ring-cyan-400 focus:border-cyan-500 dark:focus:border-cyan-400 placeholder-right text-sm sm:text-base resize-none transition-colors duration-300"
+                          rows="2"
+                          placeholder="سوال یا دستور خود را اینجا بنویسید..."
+                          oninput="this.style.height = 'auto'; this.style.height = (this.scrollHeight) + 'px';"
+                          style="max-height: 150px;"></textarea>
+                <button id="submitButton"
+                        title="ارسال پیام"
+                        style="color: var(--button-accent-text-light);"
+                        class="bg-cyan-500 hover:bg-cyan-600 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:[color:var(--button-accent-text-dark)] font-medium py-3 px-4 rounded-lg transition-colors duration-150 ease-in-out self-end flex items-center justify-center h-[70px] ">
+                        
+
+                        <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" transform="matrix(-1, 0, 0, 1, 0, 0)" stroke="#fdf6f6"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.4376 15.3703L12.3042 19.5292C11.9326 20.2537 10.8971 20.254 10.525 19.5297L4.24059 7.2971C3.81571 6.47007 4.65077 5.56156 5.51061 5.91537L18.5216 11.2692C19.2984 11.5889 19.3588 12.6658 18.6227 13.0704L14.4376 15.3703ZM14.4376 15.3703L5.09594 6.90886" stroke="#fffafa" stroke-width="2" stroke-linecap="round"></path> </g></svg>
+                        
+                    </button>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // کد مربوط به API و دستیار هوش مصنوعی (بدون تغییر باقی می‌ماند)
+        const promptInput = document.getElementById('promptInput');
+        const submitButton = document.getElementById('submitButton');
+        const responseArea = document.getElementById('responseArea');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const modelSelect = document.getElementById('modelSelect');
+        const API_KEY = 'YOUR_API_KEY'; // کلید API شما
+
+        promptInput.addEventListener('input', function () { /* ... کد بدون تغییر ... */
+            this.style.height = 'auto';
+            let newHeight = this.scrollHeight;
+            const maxHeight = 150;
+            if (newHeight > maxHeight) {
+                newHeight = maxHeight;
+                this.style.overflowY = 'auto';
+            } else {
+                this.style.overflowY = 'hidden';
+            }
+            this.style.height = newHeight + 'px';
+        });
+
+        submitButton.addEventListener('click', async () => { /* ... کد API call بدون تغییر زیاد در منطق اصلی ... */
+            const promptText = promptInput.value.trim();
+            const selectedModel = modelSelect.value;
+
+            if (!promptText) {
+                responseArea.textContent = 'لطفاً سوالی را وارد کنید.';
+                responseArea.style.color = 'var(--text-orange, #f97316)'; // orange-500
+                document.documentElement.classList.contains('dark') ? responseArea.style.color = 'var(--text-orange-dark, #fb923c)' : null; // orange-400 dark
+                return;
+            }
+            responseArea.style.color = 'var(--text-primary)';
+
+
+            if (API_KEY === 'YOUR_API_KEY' || API_KEY === '' || API_KEY.startsWith('AIzaSy') === false ) {
+                responseArea.textContent = 'خطا: لطفاً ابتدا یک کلید API معتبر در کد قرار دهید. کلید فعلی نمونه یا نامعتبر است.';
+                responseArea.style.color = 'var(--text-red, #dc2626)'; // red-600
+                document.documentElement.classList.contains('dark') ? responseArea.style.color = 'var(--text-red-dark, #f87171)' : null; // red-400 dark
+                return;
+            }
+             responseArea.style.color = 'var(--text-primary)';
+
+
+            responseArea.textContent = '';
+            loadingIndicator.style.display = 'flex';
+            submitButton.disabled = true;
+            promptInput.disabled = true;
+            submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+            promptInput.classList.add('opacity-70');
+            if(document.documentElement.classList.contains('dark')) promptInput.classList.add('dark:opacity-60');
+
+
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${API_KEY}`;
+            const requestBody = { contents: [{ parts: [{ text: promptText }] }] };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestBody)
+                });
+                const responseData = await response.json().catch(e => {
+                    console.error('Error parsing JSON response:', e);
+                    return { error: { message: 'پاسخ دریافتی از API فرمت JSON معتبری نداشت.' }};
+                });
+
+                if (!response.ok) {
+                    console.error('Error from API:', responseData);
+                    let errorMessage = `خطا در دریافت پاسخ از API: ${response.status}`;
+                    if (responseData.error && responseData.error.message) {
+                        errorMessage += ` - ${responseData.error.message}`;
+                    }
+                     if (response.status === 400 && responseData.error?.message.includes("API key not valid")) {
+                        errorMessage = 'کلید API وارد شده معتبر نیست یا منقضی شده است. لطفاً آن را بررسی کنید.';
+                    } else if (response.status === 403) {
+                        errorMessage = 'دسترسی به API ممنوع است. ممکن است کلید API شما مجوز لازم برای این مدل یا عملیات را نداشته باشد.';
+                    } else if (response.status === 429) {
+                        errorMessage = 'تعداد درخواست‌ها بیش از حد مجاز است. لطفاً کمی صبر کنید و دوباره تلاش نمایید.';
+                    }
+                    responseArea.textContent = errorMessage;
+                    responseArea.style.color = 'var(--text-red, #dc2626)';
+                    if(document.documentElement.classList.contains('dark')) responseArea.style.color = 'var(--text-red-dark, #f87171)';
+
+                } else {
+                    if (responseData.candidates && responseData.candidates[0]?.content?.parts?.[0]?.text) {
+                        responseArea.textContent = responseData.candidates[0].content.parts[0].text;
+                        responseArea.style.color = 'var(--text-primary)';
+                    } else if (responseData.promptFeedback && responseData.promptFeedback.blockReason) {
+                        let blockMessage = `درخواست شما به دلیل "${responseData.promptFeedback.blockReason}" مسدود شد.`;
+                        if (responseData.promptFeedback.safetyRatings?.length > 0) {
+                            blockMessage += "\nجزئیات رتبه‌بندی ایمنی:";
+                            responseData.promptFeedback.safetyRatings.forEach(rating => {
+                                blockMessage += `\n- دسته: ${rating.category}, احتمال: ${rating.probability}`;
+                            });
+                        }
+                        responseArea.textContent = blockMessage;
+                        responseArea.style.color = 'var(--text-yellow, #ca8a04)'; // yellow-600
+                        if(document.documentElement.classList.contains('dark')) responseArea.style.color = 'var(--text-yellow-dark, #facc15)'; // yellow-400 dark
+
+                    } else {
+                        console.error('Unexpected API response structure:', responseData);
+                        responseArea.textContent = 'ساختار پاسخ API قابل شناسایی نبود یا پاسخی دریافت نشد.';
+                        responseArea.style.color = 'var(--text-orange, #f97316)';
+                        if(document.documentElement.classList.contains('dark')) responseArea.style.color = 'var(--text-orange-dark, #fb923c)';
+                    }
+                }
+            } catch (error) {
+                console.error('Network or other error:', error);
+                responseArea.textContent = 'خطا: امکان برقراری ارتباط با وجود ندارد. لطفاً اتصال فیلتر شکن خود را بررسی کنید.';
+                responseArea.style.color = 'var(--text-red, #dc2626)';
+                if(document.documentElement.classList.contains('dark')) responseArea.style.color = 'var(--text-red-dark, #f87171)';
+            } finally {
+                loadingIndicator.style.display = 'none';
+                submitButton.disabled = false;
+                promptInput.disabled = false;
+                submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                promptInput.classList.remove('opacity-70', 'dark:opacity-60');
+                promptInput.style.height = 'auto';
+                let initialRows = 2;
+                let lineHeight = parseFloat(getComputedStyle(promptInput).lineHeight);
+                promptInput.style.height = (initialRows * lineHeight + parseFloat(getComputedStyle(promptInput).paddingTop) + parseFloat(getComputedStyle(promptInput).paddingBottom)) + 'px';
+                promptInput.style.overflowY = 'hidden';
+            }
+        });
+
+        // کد مربوط به مدیریت حالت تاریک/روشن
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        const themeToggleButton = document.getElementById('theme-toggle');
+
+        function applyTheme(isDark) {
+            const root = document.documentElement;
+            if (isDark) {
+                root.classList.add('dark');
+                themeToggleLightIcon.classList.remove('hidden');
+                themeToggleDarkIcon.classList.add('hidden');
+                localStorage.setItem('theme', 'dark');
+                 // به‌روزرسانی رنگ‌های پیام‌های خطا/هشدار برای حالت تاریک
+                root.style.setProperty('--text-orange', '#fb923c'); // orange-400
+                root.style.setProperty('--text-red', '#f87171');     // red-400
+                root.style.setProperty('--text-yellow', '#facc15');   // yellow-400
+            } else {
+                root.classList.remove('dark');
+                themeToggleDarkIcon.classList.remove('hidden');
+                themeToggleLightIcon.classList.add('hidden');
+                localStorage.setItem('theme', 'light');
+                // به‌روزرسانی رنگ‌های پیام‌های خطا/هشدار برای حالت روشن
+                root.style.setProperty('--text-orange', '#f97316'); // orange-500
+                root.style.setProperty('--text-red', '#dc2626');     // red-600
+                root.style.setProperty('--text-yellow', '#ca8a04');   // yellow-600
+            }
+             // اطمینان از اعمال رنگ صحیح پیام پس از تغییر تم
+            const currentResponseColorClass = responseArea.className.match(/text-(orange|red|yellow)-(500|600|dark:text-orange-400|dark:text-red-400|dark:text-yellow-400)/);
+            if (currentResponseColorClass) {
+                 if (responseArea.textContent.startsWith('لطفاً سوالی را وارد کنید.')) {
+                    responseArea.style.color = isDark ? 'var(--text-orange-dark, #fb923c)' : 'var(--text-orange, #f97316)';
+                } else if (responseArea.textContent.startsWith('خطا:') || responseArea.textContent.startsWith('کلید API')) {
+                    responseArea.style.color = isDark ? 'var(--text-red-dark, #f87171)' : 'var(--text-red, #dc2626)';
+                } else if (responseArea.textContent.startsWith('درخواست شما به دلیل')) {
+                     responseArea.style.color = isDark ? 'var(--text-yellow-dark, #facc15)' : 'var(--text-yellow, #ca8a04)';
+                } else if (responseArea.textContent.startsWith('ساختار پاسخ API')) {
+                    responseArea.style.color = isDark ? 'var(--text-orange-dark, #fb923c)' : 'var(--text-orange, #f97316)';
+                }
+            } else if(responseArea.textContent !== 'پاسخ هوش مصنوعی در اینجا نمایش داده خواهد شد...'){
+                 responseArea.style.color = 'var(--text-primary)';
+            }
+
+
+        }
+
+        const storedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        if (storedTheme) {
+            applyTheme(storedTheme === 'dark');
+        } else {
+            applyTheme(prefersDark);
+        }
+
+        themeToggleButton.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            applyTheme(!isDark);
+        });
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                applyTheme(e.matches);
+            }
+        });
+    </script>
+
+</body>
+</html>
