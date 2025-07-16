@@ -1,5 +1,5 @@
-# I made this with js html css  and tailwind ( need vpn in iran to work )
-get ur api at https://aistudio.google.com/apikey and place it in code .env
+# I made this with  html/css/js axios and tailwind ( need vpn in iran to work )
+get your api at https://aistudio.google.com/apikey and place it in .env
 
 ## 🚀 Quick Start
 
