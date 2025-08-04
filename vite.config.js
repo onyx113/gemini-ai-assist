@@ -4,8 +4,13 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
   ],
+  preview: {
+    port: parseInt(process.env.PORT) || 3000,
+    host: true,
+    allowedHosts: ['gemini-ai-assist.onrender.com']
+  },
   server: {
-    port: process.env.PORT || 3000,
-    host: true 
+    port: parseInt(process.env.PORT) || 3000,
+    host: true
   }
 })
