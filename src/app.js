@@ -219,7 +219,7 @@ const App = {
                     errorMessage = `خطا در API: ${status} - ${errorDetails}`;
             }
         } else if (error.request) {
-            errorMessage = 'خطا: پاسخی از سرور دریافت نشد. .';
+            errorMessage = 'خطا : اتصال vpn خود را بررسی کنید';
         } else {
             errorMessage = `خطا در هنگام آماده‌سازی درخواست: ${error.message}`;
         }
@@ -260,6 +260,9 @@ const App = {
         
         UIManager.setLoadingState(true);
         UIManager.clearResponse();
+
+        UIManager.promptInput.value = '';
+        UIManager.updateSubmitButtonState();  
 
         try {
             const selectedModel = UIManager.getSelectedModel();
