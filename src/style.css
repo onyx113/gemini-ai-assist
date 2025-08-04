@@ -1,67 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
 @import "tailwindcss";
 
 body {
-    font-family: 'Tahoma', 'Inter', sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    /* Use 'Inter' as the primary font */
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .placeholder-right::placeholder {
-    text-align: right;
-    color: #a1a1aa; /* zinc-400 */
+    text-align: right;
+    color: #a1a1aa; /* zinc-400 */
 }
 
 html.dark .placeholder-right::placeholder {
-    color: #71717a; /* zinc-500 */
+    color: #71717a; /* zinc-500 */
 }
 
 /* CSS variables for high-contrast scrollbar and selection */
 :root {
-    --scrollbar-track-bg: #f8fafc;   /* slate-50 */
-    --scrollbar-thumb-bg: #cbd5e1;   /* slate-300 */
-    --scrollbar-thumb-hover-bg: #94a3b8;/* slate-400 */
-    --selection-bg: #06b6d4;     /* cyan-500 */
-    --selection-text: white;
-    /* Main colors for light mode */
-    --app-bg: #eef2f7;
-    --content-bg: white;
-    --text-primary: #1e293b; /* slate-800 */
-    --text-secondary: #475569; /* slate-600 */
-    --border-color: #e2e8f0; /* slate-200 */
-    --header-bg: #f8fafc; /* slate-50 */
-    --header-text: #1e293b; /* slate-800 */
-    --input-bg: white;
-    --input-text: #111827; /* gray-900 */
-    --input-border: #d1d5db; /* gray-300 */
-    --button-accent-text-light: white;
-    /* Error/Warning colors */
-    --text-orange: #f97316; /* orange-500 */
-    --text-red: #dc2626; /* red-600 */
-    --text-yellow: #ca8a04; /* yellow-600 */
+    --scrollbar-track-bg: #f8fafc;   /* slate-50 */
+    --scrollbar-thumb-bg: #cbd5e1;   /* slate-300 */
+    --scrollbar-thumb-hover-bg: #94a3b8;/* slate-400 */
+    --selection-bg: #06b6d4;     /* cyan-500 */
+    --selection-text: white;
+    /* Main colors for light mode */
+    --app-bg: #eef2f7;
+    --content-bg: white;
+    --text-primary: #1e293b; /* slate-800 */
+    --text-secondary: #475569; /* slate-600 */
+    --border-color: #e2e8f0; /* slate-200 */
+    --header-bg: #f8fafc; /* slate-50 */
+    --header-text: #1e293b; /* slate-800 */
+    --input-bg: white;
+    --input-text: #111827; /* gray-900 */
+    --input-border: #d1d5db; /* gray-300 */
+    --button-accent-text-light: white;
+    /* Error/Warning colors */
+    --text-orange: #f97316; /* orange-500 */
+    --text-red: #dc2626; /* red-600 */
+    --text-yellow: #ca8a04; /* yellow-600 */
 }
 
 html.dark {
-    --scrollbar-track-bg: #1c1f2c;   /* slate-950 */
-    --scrollbar-thumb-bg: #334155;   /* slate-700 */
-    --scrollbar-thumb-hover-bg: #475569;/* slate-600 */
-    --selection-bg: #22d3ee;     /* cyan-400 */
-    --selection-text: #020617;   /* slate-950 */
-    /* Main colors for dark mode */
-    --app-bg: #0c0b0b;
-    --content-bg: #0f172a; /* slate-900 */
-    --text-primary: #e2e8f0; /* slate-200 */
-    --text-secondary: #94a3b8; /* slate-400 */
-    --border-color: #334155; /* slate-700 */
-    --header-bg: #020617; /* slate-950 */
-    --header-text: #e2e8f0; /* slate-200 */
-    --input-bg: #1e293b; /* slate-800 */
-    --input-text: #f1f5f9; /* slate-100 */
-    --input-border: #475569; /* slate-600 */
-    --button-accent-text-dark: #f1f5f9;
-    /* Error/Warning colors for dark mode */
-    --text-orange: #fb923c; /* orange-400 */
-    --text-red: #f87171;   /* red-400 */
-    --text-yellow: #facc15; /* yellow-400 */
+    --scrollbar-track-bg: #1c1f2c;   /* slate-950 */
+    --scrollbar-thumb-bg: #334155;   /* slate-700 */
+    --scrollbar-thumb-hover-bg: #475569;/* slate-600 */
+    --selection-bg: #22d3ee;     /* cyan-400 */
+    --selection-text: #020617;   /* slate-950 */
+    /* Main colors for dark mode */
+    --app-bg: #0c0b0b;
+    --content-bg: #0f172a; /* slate-900 */
+    --text-primary: #e2e8f0; /* slate-200 */
+    --text-secondary: #94a3b8; /* slate-400 */
+    --border-color: #334155; /* slate-700 */
+    --header-bg: #020617; /* slate-950 */
+    --header-text: #e2e8f0; /* slate-200 */
+    --input-bg: #1e293b; /* slate-800 */
+    --input-text: #f1f5f9; /* slate-100 */
+    --input-border: #475569; /* slate-600 */
+    --button-accent-text-dark: #f1f5f9;
+    /* Error/Warning colors for dark mode */
+    --text-orange: #fb923c; /* orange-400 */
+    --text-red: #f87171;   /* red-400 */
+    --text-yellow: #facc15; /* yellow-400 */
 }
 
 ::-webkit-scrollbar { width: 8px; }
